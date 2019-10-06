@@ -7,7 +7,7 @@ const SpotSchema = new mongoose.Schema({
   techs: [String],
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user'
+    ref: 'User'
   }
 })
 
