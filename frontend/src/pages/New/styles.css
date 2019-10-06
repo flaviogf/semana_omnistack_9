@@ -1,0 +1,15 @@
+.New__label-file {
+  background-repeat: no-repeat;
+  border: 1px dashed #dddddd;
+  background-position: center;
+  background-size: center;
+  cursor: pointer;
+  display: block;
+  margin: 8px 0;
+  height: 125px;
+  width: 100%;
+}
+
+.New__input-file {
+  display: none;
+}
