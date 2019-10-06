@@ -1,0 +1,21 @@
+.Dashboard__spots {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+}
+
+.Dashboard__spot-header {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  height: 120px;
+}
+
+.Dashboard__spot-company {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.Dashboard__spot-price {
+  color: #dddddd;
+}
