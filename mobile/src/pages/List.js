@@ -1,10 +1,50 @@
-import React from 'react'
-import { View, Text } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import {
+  AsyncStorage,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Image
+} from 'react-native'
+
+import SpotList from '../components/SpotList'
+
+import logo from '../../assets/logo.png'
+
+const style = StyleSheet.create({
+  container: {
+    paddingVertical: 16,
+    flex: 1
+  },
+
+  logo: {
+    alignSelf: 'center',
+    margin: 16
+  }
+})
 
 export default function List() {
+  const [techs, setTechs] = useState([])
+
+  useEffect(() => {
+    async function loadTechs() {
+      const storageTechs = await AsyncStorage.getItem('@techs')
+
+      setTechs(storageTechs.split(',').map((it) => it.trim()))
+    }
+
+    loadTechs()
+  }, [])
+
   return (
-    <View>
-      <Text>List</Text>
-    </View>
+    <SafeAreaView style={style.container}>
+      <ScrollView>
+        <Image style={style.logo} source={logo} />
+
+        {techs.map((it) => (
+          <SpotList key={it} tech={it} />
+        ))}
+      </ScrollView>
+    </SafeAreaView>
   )
 }

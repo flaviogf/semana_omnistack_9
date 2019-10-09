@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   View,
   Text,
@@ -6,10 +6,14 @@ import {
   Image,
   KeyboardAvoidingView,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage
 } from 'react-native'
+import PropTypes from 'prop-types'
 
 import logo from '../../assets/logo.png'
+
+import api from '../services/api'
 
 const style = StyleSheet.create({
   container: {
@@ -55,7 +59,23 @@ const style = StyleSheet.create({
   }
 })
 
-export default function Login() {
+export default function Login({ navigation }) {
+  const [email, setEmail] = useState('')
+  const [techs, setTechs] = useState('')
+
+  async function onSubmit() {
+    const response = await api.post('/session', { email, techs })
+
+    const { _id } = response.data
+
+    await Promise.all([
+      AsyncStorage.setItem('@user', _id),
+      AsyncStorage.setItem('@techs', techs)
+    ])
+
+    navigation.navigate('List')
+  }
+
   return (
     <KeyboardAvoidingView style={style.container} behavior="padding" enabled>
       <Image source={logo} style={style.image} />
@@ -63,6 +83,8 @@ export default function Login() {
       <View style={style.form}>
         <Text style={style.label}>SEU E-MAIL *</Text>
         <TextInput
+          onChangeText={setEmail}
+          value={email}
           style={style.input}
           placeholder="Seu e-mail"
           keyboardType="email-address"
@@ -72,16 +94,24 @@ export default function Login() {
 
         <Text style={style.label}>TECNOLOGIAS *</Text>
         <TextInput
+          onChangeText={setTechs}
+          value={techs}
           style={style.input}
           placeholder="Teconologias de interesse"
           autoCapitalize="words"
           autoCorret={false}
         />
 
-        <TouchableOpacity style={style.button}>
+        <TouchableOpacity style={style.button} onPress={onSubmit}>
           <Text style={style.buttonText}>Encontrar sposts</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
   )
+}
+
+Login.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired
+  }).isRequired
 }
