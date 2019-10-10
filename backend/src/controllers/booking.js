@@ -16,6 +16,12 @@ const BookingController = {
       .populate('spot')
       .execPopulate()
 
+    const onwnerUser = req.connectedUsers[booking.spot.user]
+
+    if (onwnerUser) {
+      req.io.to(onwnerUser).emit('request_book', booking)
+    }
+
     return res.status(201).json(booking)
   }
 }

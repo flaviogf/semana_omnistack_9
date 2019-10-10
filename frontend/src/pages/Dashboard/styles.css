@@ -1,7 +1,8 @@
 .Dashboard__spots {
-  display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 20px;
+  padding: 0 8px;
+  display: grid;
 }
 
 .Dashboard__spot-header {
@@ -18,4 +19,34 @@
 
 .Dashboard__spot-price {
   color: #dddddd;
+  margin: 8px 0;
+}
+
+.Dashboard__request {
+  align-items: flex-start;
+  flex-direction: column;
+  display: flex;
+}
+
+.Dashboard__request-message {
+  text-align: justify;
+  line-height: 24px;
+  font-size: 15px;
+  padding: 0 8px;
+}
+
+.Dashboard__request-button {
+  background-color: transparent;
+  margin: 5px 5px 10px 0;
+  cursor: pointer;
+  border: none;
+  padding: 0 8px;
+}
+
+.Dashboard__request-accept {
+  color: #43a047;
+}
+
+.Dashboard__request-reject {
+  color: #f4511e;
 }
