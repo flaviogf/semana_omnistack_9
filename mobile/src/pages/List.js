@@ -13,13 +13,12 @@ import logo from '../../assets/logo.png'
 
 const style = StyleSheet.create({
   container: {
-    paddingVertical: 16,
     flex: 1
   },
 
   logo: {
     alignSelf: 'center',
-    margin: 16
+    margin: 32
   }
 })
 

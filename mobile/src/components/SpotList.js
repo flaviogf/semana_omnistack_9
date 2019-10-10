@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, FlatList, Image, StyleSheet } from 'react-native'
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  StyleSheet,
+  TouchableOpacity
+} from 'react-native'
 import PropTypes from 'prop-types'
+import { withNavigation } from 'react-navigation'
 
 import api from '../services/api'
 
@@ -11,26 +19,52 @@ const style = StyleSheet.create({
   },
 
   title: {
-    fontWeight: 'bold',
-    fontSize: 18
+    fontSize: 20,
+    margin: 5
+  },
+
+  spot: {
+    margin: 5
   },
 
   image: {
-    height: 125,
-    width: 125,
-    resizeMode: 'contain'
+    resizeMode: 'cover',
+    height: 100,
+    width: 175
   },
 
   company: {
-    fontWeight: 'bold'
+    marginVertical: 2.5,
+    fontWeight: 'bold',
+    fontSize: 24
   },
 
   price: {
-    color: '#ddd'
+    marginVertical: 2.5,
+    color: '#ddd',
+    fontSize: 16
+  },
+
+  solicitationButton: {
+    backgroundColor: '#f05a5b',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 2,
+    marginTop: 10,
+    height: 45
+  },
+
+  solicitationButtonText: {
+    fontWeight: 'bold',
+    color: '#ffffff'
+  },
+
+  bold: {
+    fontWeight: 'bold'
   }
 })
 
-export default function SpotList({ tech }) {
+function SpotList({ tech, navigation }) {
   const [spots, setSpots] = useState([])
 
   useEffect(() => {
@@ -45,27 +79,49 @@ export default function SpotList({ tech }) {
     loadSpots()
   }, [])
 
+  function selectSpot({ _id }) {
+    navigation.navigate('Book', { _id })
+  }
+
   return (
     <View style={style.container}>
-      <Text style={style.title}>{tech}</Text>
+      <Text style={style.title}>
+        Empresas que usam
+        <Text style={style.bold}> {tech}</Text>
+      </Text>
 
       <FlatList
         renderItem={({ item }) => (
-          <View>
+          <View style={style.spot}>
             <Image style={style.image} source={{ uri: item.thumbnailUrl }} />
             <Text style={style.company}>{item.company}</Text>
             <Text style={style.price}>
               {item.price ? `R$ ${item.price}/dia` : 'GRATUITO'}
             </Text>
+            <TouchableOpacity
+              onPress={() => selectSpot(item)}
+              style={style.solicitationButton}
+            >
+              <Text style={style.solicitationButtonText}>
+                Solicitar Reserva
+              </Text>
+            </TouchableOpacity>
           </View>
         )}
+        showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item._id}
         data={spots}
+        horizontal
       />
     </View>
   )
 }
 
 SpotList.propTypes = {
-  tech: PropTypes.string.isRequired
+  tech: PropTypes.string.isRequired,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired
+  }).isRequired
 }
+
+export default withNavigation(SpotList)
