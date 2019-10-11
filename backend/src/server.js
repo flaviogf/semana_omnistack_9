@@ -38,4 +38,4 @@ app.use('/files', express.static(path.resolve(__dirname, '..', 'uploads')))
 
 app.use(routes)
 
-server.listen(3333, () => console.log('Is running on port 3000'))
+server.listen(3333, () => console.log('Is running on port 3333'))

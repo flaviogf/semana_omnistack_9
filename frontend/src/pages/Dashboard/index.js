@@ -25,15 +25,23 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function loadSpots() {
-      const user = localStorage.getItem('@user')
-
       const response = await api.get('/dashboard', { headers: { user } })
 
       setSpots(response.data)
     }
 
     loadSpots()
-  }, [])
+  }, [user])
+
+  async function accept(request) {
+    await api.post(`/booking/${request._id}/accept`)
+    setRequests(requests.filter(it => it._id !== request._id))
+  }
+
+  async function reject(request) {
+    await api.post(`/booking/${request._id}/reject`)
+    setRequests(requests.filter(it => it._id !== request._id))
+  }
 
   return (
     <>
@@ -51,12 +59,14 @@ export default function Dashboard() {
             <div>
               <button
                 className="Dashboard__request-button Dashboard__request-accept"
+                onClick={() => accept(request)}
                 type="button"
               >
                 ACEITAR
               </button>
               <button
                 className="Dashboard__request-button Dashboard__request-reject"
+                onClick={() => reject(request)}
                 type="button"
               >
                 RECUSAR
